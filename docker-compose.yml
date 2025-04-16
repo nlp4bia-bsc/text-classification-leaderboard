@@ -8,7 +8,7 @@ services:
       - "9090:8501"
 
     volumes:
-      - /projects/text-classification-leaderboard/DATA/:/mounted
+      - /projects/text-classification-leaderboard-app/DATA/
 
     environment:
       TESTSETS_PATH: /mounted/testsets
