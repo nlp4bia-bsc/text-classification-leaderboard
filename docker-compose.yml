@@ -1,6 +1,6 @@
 services:
-  ner-leaderboard:
-    image: ner-leaderboard
+  text-classification-leaderboard:
+    image: text-classification-leaderboard
     build:
       context: .
       dockerfile: Dockerfile
@@ -27,4 +27,4 @@ services:
 
     labels:
       maintainer: "wesam.alnabki@gmail.com"
-      service: "NER Leaderboard"
+      service: "Text Classification Leaderboard"
