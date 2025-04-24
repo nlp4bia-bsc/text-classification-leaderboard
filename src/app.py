@@ -9,6 +9,7 @@ from datetime import datetime
 from dotenv import load_dotenv, find_dotenv
 import pandas as pd
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from tc_evaluation import evaluate_classification
 
 # --- Load environment variables ---
 load_dotenv(find_dotenv())
@@ -97,7 +98,7 @@ if st.session_state.get("authentication_status"):
             return
 
         cols = st.columns([2, 2, 2, 1, 1, 1, 1, 2, 2])
-        headers = ["Submission Name", "Model Link", "Person Name", "Accuracy", "Precision", "Recall", "F1", "Date", "Actions"]
+        headers = ["Submission Name", "Model Link", "Person Name", "Accuracy", "W. Precision", "W. Recall", "W. F1", "Date", "Actions"]
         for col, header in zip(cols, headers): col.markdown(f"**{header}**")
 
         for sub in submissions:
@@ -136,14 +137,9 @@ if st.session_state.get("authentication_status"):
                 else:
                     gs = dataset_dict.get(sub.dataset_name)
                     pred = pd.read_csv(path)
-                    acc, prec, rec, f1 = calculate_metrics(gs, pred)
+                    results = evaluate_classification(gs, pred)
                     st.subheader("Re-evaluation Results")
-                    st.json({
-                        "Accuracy": acc,
-                        "Precision": prec,
-                        "Recall": rec,
-                        "F1": f1
-                    })
+                    st.json(results)
                     st.success("Re-evaluated.")
 
             file_path = os.path.join(submission_save_path, f"{sub.dataset_name}__{sub.submission_name}.csv")
