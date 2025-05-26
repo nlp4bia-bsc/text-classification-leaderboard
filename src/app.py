@@ -78,8 +78,12 @@ if st.session_state.get("authentication_status"):
         return session.query(Submission).filter_by(dataset_name=dataset).order_by(Submission.submission_date.desc()).all()
 
     def calculate_metrics(gs, pred):
-        y_true = gs['label']
-        y_pred = pred['label']
+        
+        merged = pd.merge(gs, pred, on='file_name', suffixes=('_true', '_pred'))
+
+        y_true = merged['label_true']
+        y_pred = merged['label_pred']
+
         try:
             accuracy = accuracy_score(y_true, y_pred)
             precision = precision_score(y_true, y_pred, average='weighted')
