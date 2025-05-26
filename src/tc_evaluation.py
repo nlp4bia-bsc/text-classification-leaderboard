@@ -3,8 +3,11 @@ from sklearn.metrics import classification_report, precision_score, recall_score
 
 
 def evaluate_classification(gs: pd.DataFrame, pred: pd.DataFrame) -> dict:
-    y_true = gs['label']
-    y_pred = pred['label']
+    merged = pd.merge(gs, pred, on='file_name', suffixes=('_true', '_pred'))
+
+    y_true = merged['label_true']
+    y_pred = merged['label_pred']
+
     labels = sorted(set(y_true) | set(y_pred))  # Ensure consistency of labels
 
     # Compute overall scores for precision, recall, and F1
